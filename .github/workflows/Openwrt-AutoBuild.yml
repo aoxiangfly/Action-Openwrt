@@ -162,15 +162,3 @@ jobs:
         tag: ${{ env.DATE }}
         overwrite: true
         file_glob: true
-        path: openwrt/bin/targets
-        
-    - name: Upload Firmware
-      if: env.UPLOAD_FIRMWARE == 'true' && env.UPLOAD_TO_ARTIFACTS == 'true' && !cancelled() && steps.compile.outputs.status == 'success'
-      uses: actions/upload-artifact@main
-      with:
-        name: OpenWrt_firmware_${{matrix.target}}
-        path: ./Firmware/
-               
-    - name: WeChat notification
-      if: env.WECHAT_NOTIFICATION == 'true' && !cancelled() && steps.compile.outputs.status == 'success'
-      run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=${{matrix.target}}编译完成
